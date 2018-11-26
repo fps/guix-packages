@@ -6,6 +6,7 @@
   #:use-module (gnu packages linux)
   #:use-module (gnu packages base)
   #:use-module (gnu packages compression)
+  #:use-module (gnu packages wget)
   #:use-module (gnu packages elf))
 
 (define-public julia
@@ -17,6 +18,7 @@
 	      ("tar" ,tar)
 	      ("coreutils" ,coreutils)
 	      ("gzip" ,gzip)))
+    (propagated-inputs `(("wget" ,wget)))
     (supported-systems '("x86_64-linux"))
     (source (origin
 	      (method url-fetch)
@@ -51,9 +53,36 @@
 	   (with-directory-excursion out
 	     (setenv "PATH" PATH)
 	     (system* tar "xf" source "--strip-components=1")
-	     (system* patchelf "--set-interpreter" ld (string-append out "/bin/julia")))))))
+	     (system* patchelf
+		      "--set-interpreter"
+		      ld
+		      (string-append out "/bin/julia"))
+	     (system* patchelf
+		      "--set-rpath"
+		      (string-append out "/lib/julia" ":" out "/lib")
+		      (string-append out "/lib/julia/sys.so"))
+	     (system* patchelf
+		      "--set-rpath"
+		      (string-append out "/lib/julia")
+		      (string-append out "/lib/julia/libLLVM.so"))
+	     (system* patchelf
+		      "--set-rpath"
+		      (string-append out "/lib/julia")
+		      (string-append out "/lib/julia/libLLVM-6.so"))
+	     (system* patchelf
+		      "--set-rpath"
+		      (string-append out "/lib/julia")
+		      (string-append out "/lib/julia/libLLVM-6.0.so"))
+	     (system* patchelf
+		      "--set-rpath"
+		      (string-append out "/lib/julia")
+		      (string-append out "/lib/julia/libLLVM-6.0.0.so"))
+	     (system* patchelf
+		      "--set-rpath"
+		      (string-append out "/lib/julia")
+		      (string-append out "/lib/julia/libstdc++.so.6")))))))
     (synopsis "Julia")
     (description "better than matlab at least")
     (home-page "http://julialang.org")
     (license "oh well")))
-  
+
