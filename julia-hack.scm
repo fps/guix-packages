@@ -11,8 +11,8 @@
 
 (define-public julia
   (package
-    (name "julia")
-    (version "1.0.2")
+    (name "julia-hack")
+    (version "1.1.1")
     (inputs `(("glibc" ,glibc)
 	      ("patchelf" ,patchelf)
 	      ("tar" ,tar)
@@ -22,10 +22,10 @@
     (supported-systems '("x86_64-linux"))
     (source (origin
 	      (method url-fetch)
-	      (uri "https://julialang-s3.julialang.org/bin/linux/x64/1.0/julia-1.0.2-linux-x86_64.tar.gz")
+	      (uri "https://julialang-s3.julialang.org/bin/linux/x64/1.1/julia-1.1.1-linux-x86_64.tar.gz")
 	      (sha256
 	       (base32
-	        "0hpisary2n00vya6fxlfbzpkz2s82gi7lzgjsm3ari1wfm4kksg0"))))
+	        "01jgb5qypn0z7jplpbyb0b59z00c3kpfa53867rcr8l9k89kma7h"))))
     (build-system trivial-build-system)
     (arguments
      '(#:modules
